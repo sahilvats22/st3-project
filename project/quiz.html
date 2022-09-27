@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Quizzers - Online Quiz conducting platform</title>
+    <link rel="stylesheet" href="/assets/tailwind.css">
+    <script src="/assets/quiz.js"></script>
+    <script src="/assets/questions.js"></script>
+</head>
+
+<body>
+    <section class="min-h-screen bg-gray-900 overflow-hidden">
+        <div class="relative flex">
+            <div class="min-h-screen lg:w-1/3"></div>
+            <div class="hidden w-3/4 min-h-screen bg-gray-800 lg:block"></div>
+
+            <div
+                class="container flex flex-col justify-center w-full min-h-screen px-6 py-10 mx-auto lg:absolute lg:inset-x-0">
+                <h1 class="text-3xl font-semibold capitalize lg:text-4xl xl:text-5xl text-white">
+                    Question <span class="text-blue-500" id="question_no">1</span>
+                </h1>
+
+                <div class="flex w-full justify-end pr-8">
+                    <h1 class="text-xl font-semibold capitalize lg:text-3xl xl:text-2xl text-white">
+                        Time remaining <span class="text-blue-500" id="timer">0</span>
+                    </h1>
+                </div>
+
+
+                <div class="mt-10 lg:flex lg:items-center">
+                    <div class="flex object-cover items-center lg:w-1/2 justify-center">
+                        <img class="w-full h-full object-cover select-none text-white" id="question_image" src=""
+                            alt="Question" height="200px" width="200px">
+                    </div>
+
+                    <div class="mt-8 lg:px-10 lg:mt-0 hidden" id="timeOut">
+                        <div class="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800">
+                            <div class="flex items-center px-6 py-3 bg-red-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                    </path>
+                                </svg>
+
+                                <h1 class="mx-3 text-lg font-semibold text-white">Time Up!</h1>
+                            </div>
+
+                            <div class="px-6 py-4">
+                                <p class="py-2 text-gray-400">The time is over to attempt this
+                                    Question!
+                                    <br>If you have marked an option, it will be considered as your answer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 lg:px-10 lg:mt-0" id="quiz_box">
+                        <h1 class="text-2xl font-semibold text-white lg:w-72">
+                            Choose the correct answer
+                        </h1>
+
+                        <hr class="w-0 h-4">
+                        <div class="-mx-2 md:items-center md:flex space-x-4 md:space-y-0 space-y-4">
+                            <button onclick="chooseAnswer('A')" id="A"
+                                class="flex-1 px-7 py-3 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none select-none border-2 border-red-600">
+                                Option A
+                            </button>
+                            <button onclick="chooseAnswer('B')" id="B"
+                                class="flex-1 px-7 py-3 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none select-none">
+                                Option B
+                            </button>
+                        </div>
+                        <hr class="w-0 h-4">
+
+                        <div class="-mx-2 md:items-center md:flex space-x-4 md:space-y-0 space-y-4">
+                            <button onclick="chooseAnswer('C')" id="C"
+                                class="flex-1 px-7 py-3 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none select-none">
+                                Option C
+                            </button>
+                            <button onclick="chooseAnswer('D')" id="D"
+                                class="flex-1 px-7 py-3 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none select-none">
+                                Option D
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-12 lg:justify-start">
+                        <button onclick="nextQuestion()"
+                            class="p-2 transition-colors duration-300 border rounded-full rtl:-scale-x-100 border-gray-700 text-gray-200 lg:mx-6 hover:bg-gray-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    const user = sessionStorage.getItem("user");
+    if (!user) {
+        window.location.href = `details.html${window.location.search}`;
+    }
+
+    const code = window.location.search.split("=")[0] === "?code" ? window.location.search.split("=")[1] : null;
+    if (!code) window.location.href = "/"
+
+    showQuestion(0);
+    if (!localStorage.getItem(code) || (new Date() - new Date(localStorage.getItem(code)) === 86400000)) localStorage.setItem(code, new Date())
+</script>
+
+</html>

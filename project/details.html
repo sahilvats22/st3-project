@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Quizzers - Online Quiz conducting platform</title>
+    <link rel="stylesheet" href="/assets/tailwind.css">
+</head>
+
+<body>
+    <section id="details" class="min-h-screen bg-gray-900 lg:flex">
+        <div class="flex flex-col justify-center w-full p-8 bg-gray-800 lg:px-12 xl:px-32 lg:w-1/2">
+            <h1 class="text-3xl font-semibold capitalize text-white lg:text-5xl">Register now</h1>
+
+            <p class="mt-4 text-gray-400">
+                Register yourself to participate in Quizzers Online Quizzes
+            </p>
+        </div>
+
+        <div class="flex flex-col justify-center w-full p-8 pt-0 lg:w-1/2 lg:px-12 xl:px-24 ">
+            <form id="details_input">
+                <div class="-mx-2 md:items-center md:flex">
+                    <div class="flex-1 px-2">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">First Name</label>
+                        <input type="text" placeholder="John" name="first_name"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+
+                    <div class="flex-1 px-2 mt-4 md:mt-0">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">Surname</label>
+                        <input type="text" placeholder="Doe" name="surname"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+                </div>
+
+                <div class="-mx-2 md:items-center mt-4 md:flex">
+                    <div class="flex-1 px-2">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">Email address</label>
+                        <input type="email" placeholder="gaurav2300.be21@chitkara.edu.in" name="email"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+
+                    <div class="flex-1 px-2 mt-4 md:mt-0">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">Roll Number</label>
+                        <input type="text" placeholder="2110992300" name="roll_number" minlength="9" maxlength="11"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+                </div>
+
+                <div class="-mx-2 md:items-center mt-4 md:flex">
+                    <div class="flex-1 px-2">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">Phone Number</label>
+                        <input type="tel" name="phone_number" placeholder="9876543210" minlength="10" maxlength="10"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+
+                    <div class="flex-1 px-2 mt-4 md:mt-0">
+                        <label class="block mb-2 text-sm text-gray-200 select-none">Date of Birth</label>
+                        <input type="date" name="dob"
+                            class="block w-full px-5 py-3 mt-2  border border-gray-700 rounded-md placeholder-gray-600 bg-gray-900 text-gray-300 focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 select-none"
+                            notrequired />
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full px-6 py-3 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50 select-none">
+                    Register
+                </button>
+            </form>
+        </div>
+    </section>
+</body>
+<script>
+    if (sessionStorage.getItem("user")) window.location.href = "/";
+
+    document.getElementById("details_input").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const form = document.getElementById("details_input");
+        if (!form.email.value.toString().match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@chitkara.edu.in$/i)) {
+            alert("Please enter a valid Chitkara University email address");
+            return;
+        }
+        if (!form.phone_number.value.toString().match(/^[0-9]{10}$/)) {
+            alert("Please enter a valid phone number");
+            return;
+        }
+        const user = {
+            first_name: form.first_name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            roll_number: form.roll_number.value,
+            phone_number: form.phone_number.value,
+            dob: form.dob.value
+        }
+        sessionStorage.setItem("user", JSON.stringify(user));
+
+        if (window.location.search) {
+            window.location.href = `/join${window.location.search}`;
+        } else {
+            window.location.href = "/";
+        }
+
+    });
+</script>
+
+</html>
